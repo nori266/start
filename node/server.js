@@ -73,7 +73,6 @@ const processData = (websocket) => {
       const tokens = data.utterance.alternatives[0].tokens.map(tok => {
         return {text: tok.text, lemma: tok.lemma, pos: tok.pos}
       });
-      logger.log(tokens)
       if (websocket.readyState === 1 && !R.isEmpty(tokens)) {
         try {
           websocket.send(
