@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <style>
+      .button {
+        background-color: #4caf50;
+        border: solid 1px black;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .item {
+        padding: 10px;
+      }
+
+      .displayText {
+        float: left;
+      }
+
+      .transcript {
+        color: gray;
+      }
+
+      .NOUN {
+        color: red;
+      }
+
+      .VERB {
+        color: green;
+      }
+
+      .ADJ {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="sg.js"></script>
+    <script type="application/javascript">
+      function ontranscription(data) {
+        const items = document.getElementById("items");
+        const utteranceId = data.utteranceId;
+        let utteranceDiv = document.getElementById(utteranceId);
+        if (!utteranceDiv) {
+          utteranceDiv = document.createElement("div");
+          utteranceDiv.setAttribute("id", utteranceId);
+          utteranceDiv.setAttribute("class", "item")
+          items.prepend(utteranceDiv);
+        }
+        if (data.tokens.length > 0) {
+          utteranceDiv.innerHTML = "";
+          data.tokens.forEach(tok => {
+            const s = document.createElement("span");
+            s.setAttribute("class", tok.pos);
+            s.innerHTML = tok.text + '(' + tok.lemma + ')' + ' ';
+            utteranceDiv.append(s);
+          });
+        }
+      }
+
+      window.onload = function() {
+        const s = slu();
+        s.ontranscription = ontranscription;
+        s.onstatus = status => {
+          document.getElementById("status").innerHTML = status;
+        };
+        s.onstatechange = state => {
+          document.getElementById("record").innerHTML = state;
+        };
+        const recordDiv = document.getElementById("record");
+        recordDiv.addEventListener("mousedown", s.start);
+        recordDiv.addEventListener("mouseup", s.stop);
+        recordDiv.addEventListener("touchstart", s.start);
+        recordDiv.addEventListener("touchend", s.stop);
+      };
+    </script>
+    <div id="status"></div>
+    <div id="record" class="button">Connect</div>
+    <div id="items"></div>
+  </body>
+</html>
