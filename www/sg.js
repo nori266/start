@@ -128,9 +128,9 @@ function slu() {
   function connect(mic) {
     const ds = downsampler(mic.context.sampleRate);
     // example when opening a language specific slu stream:
-    // const languageCode = "en-US";
-    // const ws = new WebSocket(`${wsUrl}?sampleRate=16000&languageCode=${languageCode}`);
-    const ws = new WebSocket(`${wsUrl}?sampleRate=16000`);
+    const languageCode = "en-US";
+    const ws = new WebSocket(`${wsUrl}?sampleRate=16000&languageCode=${languageCode}`);
+    //const ws = new WebSocket(`${wsUrl}?sampleRate=16000`);
     let timeoutHandle = undefined;
     let isRecording = false;
 
