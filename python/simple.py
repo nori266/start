@@ -9,6 +9,7 @@ from sg_pb2 import SluRequest, SluConfig, SluEvent, LoginRequest
 from sg_pb2_grpc import IdentityStub as IdentityService
 from sg_pb2_grpc import SluStub as SLUService
 
+
 chunk_size = 8000
 
 sample_rate_hertz=16000
