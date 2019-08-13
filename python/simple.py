@@ -1,6 +1,7 @@
 import os
 import wave
 import time
+import sys
 
 import grpc
 
@@ -13,15 +14,16 @@ chunk_size = 8000
 sample_rate_hertz=16000
 
 
-
 if 'APP_ID' not in os.environ:
     raise RuntimeError('APP_ID environment variable needs to be set')
 
-FILE_NAME = '../output45.wav'
-
+if len(sys.argv) > 1:
+    FILE_NAME = sys.argv[1]
+else: 
+    FILE_NAME = '../audio.wav'
 
 def audio_iterator():
-    yield SluRequest(config=SluConfig(channels=1, sample_rate_hertz=sample_rate_hertz, language_code='en-US'))
+    yield SluRequest(config=SluConfig(channels=1, sample_rate_hertz=sample_rate_hertz))
     yield SluRequest(event=SluEvent(event='START'))
     with wave.open(FILE_NAME, mode='r') as audio_file:
         audio_bytes = audio_file.readframes(chunk_size)
